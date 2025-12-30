@@ -1,3 +1,5 @@
+import 'package:achat_ticketbus/features/tickets/presentation/pages/tickets_view.dart';
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -242,15 +244,32 @@ class _ReservationViewState extends State<ReservationView> {
                           );
 
                           if (success == true && mounted) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(
-                                  "Réservation effectuée avec succès !",
-                                ),
-                                backgroundColor: Colors.green,
-                                behavior: SnackBarBehavior.floating,
+                            AwesomeDialog(
+                              context: context,
+                              dialogType: DialogType.success,
+                              animType: AnimType.bottomSlide,
+                              headerAnimationLoop: false,
+                              title: 'Succès !',
+                              desc:
+                                  'Votre réservation pour ${_selectedTrajet?['depart']} - ${_selectedTrajet?['arrivee']} a été confirmée.',
+                              showCloseIcon: true,
+                              titleTextStyle: GoogleFonts.poppins(
+                                fontSize: 22,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xFF44388C),
                               ),
-                            );
+                              descTextStyle: GoogleFonts.poppins(fontSize: 14),
+                              btnOkText: "Voir mes billets",
+                              btnOkColor: Color(0xFF44388C),
+                              btnOkOnPress: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => TicketsView(),
+                                  ),
+                                );
+                              },
+                            ).show();
 
                             setState(() {
                               _passagerController.clear();
